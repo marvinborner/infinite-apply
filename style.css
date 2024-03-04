@@ -1,0 +1,167 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    font-family: 'Roboto', sans-serif;
+    font-size: 20px;
+    color: #333;
+    background-size: 35px 35px;
+    background-image: radial-gradient(circle, #ccc 1px, rgba(0, 0, 0, 0) 1px);
+    user-select: none;
+}
+
+body {
+    display: flex;
+    flex-direction: row;
+}
+
+body > div {
+    height: 100%;
+    padding: 16px;
+    box-sizing: border-box;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: calc(100% - 32px);
+    height: 30px;
+    margin: 8px 0;
+}
+
+footer svg {
+    margin: 0 4px;
+}
+
+.main {
+    flex: 1;
+    width: 70%;
+}
+
+.sidebar {
+    flex: 0 0 calc(30vw + 16px);
+    margin-left: auto;
+    border-left: 2px solid #ddd;
+    background-color: #fff;
+    z-index: 42;
+}
+
+.sidebar .inventory {
+    height: calc(100% - 25px);
+    overflow-y: scroll;
+    display: flex;
+    flex-flow: row wrap;
+    align-content: flex-start;
+}
+
+.sidebar > input {
+    position: fixed;
+    bottom: 0;
+    height: 30px;
+    line-height: 20px;
+    font-size: 20px;
+    width: 100%;
+    margin-left: -16px;
+}
+
+.box {
+    margin: 4px;
+    padding: 8px;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    width: fit-content;
+    max-width: calc(30vw - 32px);
+    background-color: #fff;
+    z-index: 42;
+}
+
+.box.discovered {
+    animation: discovery 1s infinite;
+    animation-iteration-count: 3;
+}
+
+.sidebar .box {
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.sidebar .box[clicked] {
+    overflow: visible;
+    white-space: normal;
+}
+
+.popup {
+    display: none;
+}
+
+.popup.active {
+    display: block;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    height: fit-content;
+    max-height: 80vh;
+    width: 30vw;
+    overflow-y: auto;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+    background-color: #fff;
+    padding: 16px;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    font-size: 18px;
+}
+
+.popup.active > svg {
+    cursor: pointer;
+    float: right;
+}
+
+@keyframes discovery {
+    0%   {border-color: red; }
+    25%  {border-color: yellow; }
+    50%  {border-color: blue; }
+    75%  {border-color: green; }
+    100% {border-color: red; }
+}
+
+.feather {
+    width: 30px;
+    height: 30px;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+	cursor: pointer;
+}
+
+@media only screen and (max-width: 768px) {
+    .popup.active {
+        width: 70vw;
+    }
+
+    body {
+        flex-direction: column-reverse;
+    }
+
+    .main {
+        width: 100%;
+    }
+
+    .search {
+        display: none;
+    }
+
+	.sidebar {
+		width: 100%;
+		flex-basis: 30vh;
+	}
+
+	.box {
+		max-width: 50vw;
+	}
+}

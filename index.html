@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Infinite Apply</title>
+  </head>
+  <body>
+    <div class="popup">
+      <svg id="popupClose" class="feather">
+        <use href="feather-sprite.svg#x" />
+      </svg>
+      <div id="popupText"></div>
+    </div>
+    <div class="main">
+      <footer>
+        <svg id="clean" class="feather">
+          <use href="feather-sprite.svg#trash" />
+        </svg>
+        <svg id="help" class="feather">
+          <use href="feather-sprite.svg#help-circle" />
+        </svg>
+        <svg id="github" class="feather">
+          <use href="feather-sprite.svg#github" />
+        </svg>
+        <svg id="support" class="feather">
+          <use href="feather-sprite.svg#heart" />
+        </svg>
+      </footer>
+    </div>
+    <div class="sidebar">
+      <div class="inventory"></div>
+      <input
+        class="search"
+        type="text"
+        placeholder="Filter... (e.g. (\(0 0) \(0 0)))"
+      />
+    </div>
+    <script src="https://bernardo-castilho.github.io/DragDropTouch/DragDropTouch.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
