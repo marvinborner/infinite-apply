@@ -158,10 +158,15 @@ footer svg {
 
 	.sidebar {
 		width: 100%;
+		height: 30vh;
 		flex-basis: 30vh;
 	}
 
-	.box {
+	.main .box {
 		max-width: 50vw;
+	}
+
+	.sidebar .box {
+		max-width: 100%;
 	}
 }
