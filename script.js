@@ -22,7 +22,7 @@ let depth = 0;
 let canceled = false;
 const cancelReduction = () => {
   if (depth > MAX && !canceled) {
-    MAX *= 4;
+    MAX **= 1.5;
     if (
       !confirm(
         `This takes awfully long (${depth} steps!). The reduction potentially won't converge. Do you want to continue?\nWarning: This might crash your browser!`,
