@@ -166,6 +166,11 @@ footer svg {
 		max-width: 50vw;
 	}
 
+	.sidebar {
+		border: none;
+		border-bottom: 2px solid #ddd;
+	}
+
 	.sidebar .box {
 		max-width: 100%;
 	}
