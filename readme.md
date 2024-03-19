@@ -4,4 +4,4 @@
 
 ## Speedrun
 
-<video src="https://blob.jortage.com/blob2/M2stZipFcfKrbB6R/EfGM-kHY2Crn0SfMjTYdgbymNR8lVQ1EB6dLtcAWIMEh8fxyQ0ZIizN7p8fTtf/I_ag_efg.mp4"></video>
+https://github.com/marvinborner/infinite-apply/assets/32108934/5fb97d87-1078-4243-bfc2-6658b1b0d46d
