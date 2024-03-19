@@ -74,6 +74,7 @@ footer svg {
     width: fit-content;
     max-width: calc(30vw - 32px);
     background-color: #fff;
+    line-break: anywhere;
     z-index: 42;
 }
 
@@ -136,7 +137,7 @@ footer svg {
     stroke-linecap: round;
     stroke-linejoin: round;
     fill: none;
-	cursor: pointer;
+    cursor: pointer;
 }
 
 @media only screen and (max-width: 768px) {
@@ -156,22 +157,24 @@ footer svg {
         display: none;
     }
 
-	.sidebar {
-		width: 100%;
-		height: 30vh;
-		flex-basis: 30vh;
-	}
+    .sidebar {
+        width: 100%;
+        height: 30vh;
+        flex-basis: 30vh;
+        border: none;
+        border-bottom: 2px solid #ddd;
+    }
 
-	.main .box {
-		max-width: 50vw;
-	}
+    .sidebar .inventory {
+        height: 100%;
+        width: 100%;
+    }
 
-	.sidebar {
-		border: none;
-		border-bottom: 2px solid #ddd;
-	}
+    .sidebar .box {
+        max-width: 90%;
+    }
 
-	.sidebar .box {
-		max-width: 100%;
-	}
+    .main .box {
+        max-width: 50vw;
+    }
 }
