@@ -302,3 +302,14 @@ window.github.addEventListener("click", () => {
 window.support.addEventListener("click", () => {
   window.open("https://ko-fi.com/marvinborner", "_blank");
 });
+
+window.restart.addEventListener("click", () => {
+  if (
+    !confirm(
+      "Are you sure you want to restart? You will lose your entire inventory.",
+    )
+  )
+    return;
+  localStorage.clear();
+  window.location.reload();
+});
