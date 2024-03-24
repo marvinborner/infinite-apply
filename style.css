@@ -73,6 +73,8 @@ footer svg {
     cursor: pointer;
     width: fit-content;
     max-width: calc(30vw - 32px);
+    max-height: 80vh;
+    overflow-y: scroll;
     background-color: #fff;
     line-break: anywhere;
     z-index: 42;
@@ -105,7 +107,8 @@ footer svg {
     left: 50%;
     height: fit-content;
     max-height: 80vh;
-    width: 30vw;
+    width: 80vw;
+    max-width: 800px;
     overflow-y: auto;
     transform: translate(-50%, -50%);
     z-index: 100;

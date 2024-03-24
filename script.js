@@ -8,20 +8,38 @@ const abs = (body) => {
   if (body === null) return null;
   return { type: "abs", body };
 };
-const app = (left, right) => {
-  if (left === null || right === null) return null; // something something monad
+
+const app = (left) => (right) => {
+  if (left === null || right === null) return null;
   return { type: "app", left, right };
 };
+
 const idx = (idx) => {
   if (idx === null) return null;
   return { type: "idx", idx };
+};
+
+const namedAbs = (name, body) => {
+  if (body === null) return null;
+  return { type: "named-abs", name, body };
+};
+
+const higherOrderAbs = (f) => {
+  if (f === null) return null;
+  return { type: "higher-order-abs", f: f };
+};
+
+const higherOrderApp = (a) => {
+  if (a === null) return () => null;
+  else if (a.type == "higher-order-abs") return a.f;
+  else return app(a);
 };
 
 let MAX = 0;
 let depth = 0;
 let canceled = false;
 const cancelReduction = () => {
-  if (depth > MAX && !canceled) {
+  if (depth++ > MAX && !canceled) {
     MAX **= 1.5;
     if (
       !confirm(
@@ -35,65 +53,81 @@ const cancelReduction = () => {
   return canceled;
 };
 
-const inc = (i, t) => {
-  if (cancelReduction()) return null;
-  if (t === null) return null;
-  depth++;
-  switch (t.type) {
-    case "idx":
-      return idx(i <= t.idx ? t.idx + 1 : t.idx);
-    case "app":
-      return app(inc(i, t.left), inc(i, t.right));
-    case "abs":
-      return abs(inc(i + 1, t.body));
-  }
+const toTerm = () => {
+  depth = 0;
+  const go = (env) => (t) => {
+    if (cancelReduction()) return null;
+    if (t === null) return null;
+    switch (t.type) {
+      case "app":
+        return app(go(env)(t.left))(go(env)(t.right));
+      case "named-abs":
+        return abs(go([t.name, ...env])(t.body));
+      case "idx":
+        return idx(t.idx in env ? env[t.idx] : t.idx);
+      default:
+        alert("fatal error");
+        return null;
+    }
+  };
+  return go([]);
 };
 
-const subst = (i, t, s) => {
-  if (cancelReduction()) return null;
-  if (t === null || s === null) return null;
-  depth++;
-  switch (t.type) {
-    case "idx":
-      return i == t.idx ? s : idx(t.idx > i ? t.idx - 1 : t.idx);
-    case "app":
-      return app(subst(i, t.left, s), subst(i, t.right, s));
-    case "abs":
-      return abs(subst(i + 1, t.body, inc(0, s)));
-  }
+const toNamedTerm = () => {
+  depth = 0;
+  const go = (d) => (t) => {
+    if (cancelReduction()) return null;
+    if (t === null) return null;
+    switch (t.type) {
+      case "app":
+        return app(go(d)(t.left))(go(d)(t.right));
+      case "higher-order-abs":
+        return namedAbs(d, go(d + 1)(t.f(idx(d))));
+      case "idx":
+        return idx(t.idx);
+      default:
+        alert("fatal error");
+        return null;
+    }
+  };
+  return go(0);
 };
 
-const gnf = (t) => {
-  if (cancelReduction()) return null;
-  if (t === null) return null;
-  depth++;
-  switch (t.type) {
-    case "app":
-      const _left = gnf(t.left);
-      if (_left === null) return null;
-      return _left.type === "abs"
-        ? gnf(subst(0, _left.body, t.right))
-        : app(_left, gnf(t.right));
-    case "abs":
-      return abs(gnf(t.body));
-    default:
-      return t;
-  }
+const toHigherOrder = () => {
+  depth = 0;
+  const go = (env) => (t) => {
+    if (cancelReduction()) return null;
+    if (t === null) return null;
+    switch (t.type) {
+      case "app":
+        return higherOrderApp(go(env)(t.left))(go(env)(t.right));
+      case "abs":
+        return higherOrderAbs((x) => go([x, ...env])(t.body));
+      case "idx":
+        if (t.idx in env) return env[t.idx];
+        else return idx(t.idx);
+      default:
+        alert("fatal error");
+        return null;
+    }
+  };
+  return go([]);
 };
 
 const reduce = (t) => {
   MAX = 16384;
-  depth = 0;
   canceled = false;
   try {
-    return gnf(t);
+    return toTerm()(toNamedTerm()(toHigherOrder()(t)));
   } catch (e) {
+    console.error(e);
     alert(e);
     return null;
   }
 };
 
 const show = (term) => {
+  if (term === null) return "";
   switch (term.type) {
     case "abs":
       return `λ${show(term.body)}`;
@@ -115,7 +149,7 @@ const parse = (str) => {
     case "(":
       const [left, tail1] = parse(tail);
       const [right, tail2] = parse(tail1.slice(1));
-      return [app(left, right), tail2.slice(1)];
+      return [app(left)(right), tail2.slice(1)];
     case ")":
       alert("fatal");
       return [];
@@ -241,7 +275,7 @@ const load = () => {
 
 load();
 
-const s = abs(abs(abs(app(app(idx(2), idx(0)), app(idx(1), idx(0))))));
+const s = abs(abs(abs(app(app(idx(2))(idx(0)))(app(idx(1))(idx(0))))));
 const k = abs(abs(idx(1)));
 discover("s", s);
 discover("k", k);
